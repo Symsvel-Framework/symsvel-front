@@ -23,4 +23,4 @@ jobs:
       - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" --verify-tag --generate-notes --title "$GITHUB_REF_NAME"
+        run: gh release create "$GITHUB_REF_NAME" --verify-tag --title "$GITHUB_REF_NAME" --notes "Release initiale de validation. Aucun changement fonctionnel. Cette version sert de référence pour tester le processus de mise à jour en environnement APP_ENV=dev."
