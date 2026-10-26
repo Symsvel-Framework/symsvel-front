@@ -16,3 +16,8 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run qa
+      - name: Verify deployable static build
+        run: |
+          test -f build/index.html
+          test -f build/.htaccess
+          test -f build/robots.txt
