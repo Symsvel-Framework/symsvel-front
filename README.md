@@ -34,3 +34,9 @@ symsvel update front
 La mise à jour native est orchestrée par Tooling, avec suivi des fichiers gérés et contrôle des conflits. Elle ne doit ni écraser les modifications locales conflictuelles ni manipuler les branches Git du projet. Voir [le contrat technique](https://github.com/Symsvel-Framework/symsvel-tooling/blob/feat/60-update-init-simplification/docs/component-updates-v1.md).
 
 Les parcours complets de création, Setup Wizard, synchronisation des modules et mises à jour doivent encore être éprouvés sur XT avant validation finale des PR CLI #10 et Tooling #62.
+
+## Intégration continue
+
+Le workflow `.github/workflows/ci.yml` utilise le runner Docker auto-hébergé de l'organisation (labels `self-hosted`, `linux`, `ARM64`, `symsvel`). Node.js 24 est installé par `actions/setup-node`, puis `npm ci` installe les dépendances et `npx playwright install chromium` fournit le navigateur. Les bibliothèques système Chromium doivent être préinstallées dans l'image du runner : le job ne lance pas `--with-deps`.
+
+La CI conserve `npm run qa` (Svelte/TypeScript, lint, build statique, tests unitaires et Playwright) et vérifie `build/index.html`, `build/.htaccess` et `build/robots.txt`. Le workflow hébergé d'origine est conservé dans `.github/workflows/ci.yml.stub`, inactif. La migration doit être confirmée par une CI GitHub Actions verte.
