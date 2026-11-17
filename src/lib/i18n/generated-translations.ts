@@ -19,7 +19,10 @@ export function lookupGeneratedDictionary(dictionary: unknown, dottedKey: string
 }
 
 /** ISO account/site language is never mutated by the French fallback. */
-export function generatedTranslation(language: string | null | undefined, key: string): string | null {
+export function generatedTranslation(
+	language: string | null | undefined,
+	key: string
+): string | null {
 	const iso = language?.trim().toLowerCase().replace(/_/g, '-').split('-')[0] ?? 'fr';
 	for (const candidate of [...new Set([iso, 'fr'])]) {
 		const text = lookupGeneratedDictionary(catalogs[`./generated/${candidate}.ts`], key);
