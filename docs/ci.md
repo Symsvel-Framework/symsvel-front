@@ -9,3 +9,8 @@ Les jobs utilisent les runners auto-hébergés configurés dans le workflow. Une
 ## CD des releases sur runners locaux (16/11/2026)
 
 La release déclenchée par un tag `vX.Y.Z` utilise maintenant `[self-hosted, linux, ARM64, symsvel]`. Le setup Node.js 24, les tests Playwright et la génération SvelteKit demeurent ; `npx playwright install chromium` réutilise le fonctionnement de la CI sans installer de paquets système. La publication GitHub conserve les notes statiques initiales et vérifie le tag via `actions/github-script@v7`, sans dépendre du binaire `gh` (non garanti sur le runner). L'autorisation `contents: write` est maintenue, aucun tag n'est créé ici. Validation par release réelle et CT de l'artefact requise.
+
+
+## Formatage automatique sur dev (17/11/2026)
+
+Comme sur `symsvel-bo`, la CI Front lance maintenant Prettier avant les validations TypeScript, ESLint, build et tests. Sur un push de `dev`, les différences de formatage sont commitées et repoussées sur cette même branche par `github-actions[bot]`, avec rebase sur le dernier commit pour éviter d'écraser des changements simultanés. La CI continue de refuser toute dérive de formatage sur `main` et sur les PR ; aucun formatage automatique n'est déployé en production. Cette homogénéisation a été nécessaire lors de l'ajout des dictionnaires TypeScript générés.
