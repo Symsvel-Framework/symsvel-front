@@ -12,5 +12,7 @@ describe('generated translations', () => {
 	it('does not require generated files to exist for an initial build', () => {
 		expect(generatedTranslation('fr', 'nonexistent.testing')).toBeNull();
 		expect(generatedTranslation('fr', 'front.system.missing')).toBeNull();
+		expect(generatedTranslation('fr', 'front.system.welcome.title')).toBe('Bienvenue sur SvelteKit');
+		expect(generatedTranslation('en', 'front.system.welcome.docs')).toBe('Visit the SvelteKit documentation');
 	});
 });
