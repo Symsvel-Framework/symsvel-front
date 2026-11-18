@@ -48,3 +48,7 @@ Tooling peut publier `src/lib/i18n/generated/<lang>.ts` depuis le BO de dévelop
 ## Traductions des composants et modules (18/11/2026)
 
 Les textes système sont fournis par le composant sous `src/lib/translations/system/<lang>.ts` ; les textes des modules par Tooling sous `src/lib/translations/<module>/<lang>.ts`. La convention est `<scope>.<module|system>.<key>`. Le helper préfère `src/lib/translations/generated` et conserve une lecture des anciens `src/lib/i18n/generated` durant la migration. Chargement statique au build, fallback français à la clé, aucune requête runtime.
+
+### Dictionnaires et formatage
+
+`src/lib/translations/**` est exclu de Prettier, car ces fichiers sont des exports TypeScript de données JSON strictes analysées par Tooling. Les dictionnaires synchronisés depuis les modules et les fichiers générés par Languages ne doivent pas être réécrits en objets JavaScript à clés non citées. Les autres sources du projet restent formatées normalement.
