@@ -44,3 +44,7 @@ La CI conserve `npm run qa` (Svelte/TypeScript, lint, build statique, tests unit
 ## Dictionnaires statiques de traductions (17/11/2026)
 
 Tooling peut publier `src/lib/i18n/generated/<lang>.ts` depuis le BO de développement. Le helper `generatedTranslation(language, key)` dans `src/lib/i18n/generated-translations.ts` découvre les fichiers présents à la compilation SvelteKit et résout les clés imbriquées, avec repli français par clé. Le Front de base n'a pas encore de pages métier consommatrices : les modules Front doivent utiliser cette fonction pour leurs textes. Aucune dépendance à Node ou Redis en production et aucun rebuild déclenché depuis le BO ; les sources mises à jour sont construites au prochain déploiement CD.
+
+## Traductions des composants et modules (18/11/2026)
+
+Les textes système sont fournis par le composant sous `src/lib/translations/system/<lang>.ts` ; les textes des modules par Tooling sous `src/lib/translations/<module>/<lang>.ts`. La convention est `<scope>.<module|system>.<key>`. Le helper préfère `src/lib/translations/generated` et conserve une lecture des anciens `src/lib/i18n/generated` durant la migration. Chargement statique au build, fallback français à la clé, aucune requête runtime.

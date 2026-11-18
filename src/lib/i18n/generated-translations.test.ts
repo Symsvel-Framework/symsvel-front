@@ -11,5 +11,6 @@ describe('generated translations', () => {
 	});
 	it('does not require generated files to exist for an initial build', () => {
 		expect(generatedTranslation('fr', 'nonexistent.testing')).toBeNull();
+		expect(generatedTranslation('fr', 'front.system.missing')).toBeNull();
 	});
 });
