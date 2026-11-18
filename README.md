@@ -56,3 +56,7 @@ Les textes système sont fournis par le composant sous `src/lib/translations/sys
 ### Traductions du squelette Front
 
 Le squelette public Front fournit ses deux textes natifs dans `src/lib/translations/system/{fr,en}.ts` sous `front.system.welcome.*`. L'écran reste statiquement prérendu en français et utilise la langue du navigateur après hydratation, sans API de langue, stockage local ni serveur Node. Les pages métier futures pourront remplacer ce simple accueil sans conserver ses clés inutilisées.
+
+### CI des dictionnaires Front (18/11/2026)
+
+La dernière CI Front de `feat/translations-sources`, comprenant le dictionnaire natif `front.system.welcome.*` et le build statique, a terminé avec succès sur les runners locaux. Le déclencheur temporaire de cette branche a été retiré pour conserver la politique habituelle `dev`/`main`. Les CT locaux resteront nécessaires avant merge.
