@@ -7,8 +7,13 @@
 	onMount(() => {
 		language = navigator.language;
 	});
-	const title = $derived(generatedTranslation(language, 'front.system.welcome.title') ?? 'Bienvenue sur SvelteKit');
-	const docs = $derived(generatedTranslation(language, 'front.system.welcome.docs') ?? 'Consulter la documentation SvelteKit');
+	const title = $derived(
+		generatedTranslation(language, 'front.system.welcome.title') ?? 'Bienvenue sur SvelteKit'
+	);
+	const docs = $derived(
+		generatedTranslation(language, 'front.system.welcome.docs') ??
+			'Consulter la documentation SvelteKit'
+	);
 </script>
 
 <h1>{title}</h1>
