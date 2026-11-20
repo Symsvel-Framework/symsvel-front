@@ -6,9 +6,15 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: write
+
 jobs:
   test:
     runs-on: [self-hosted, linux, ARM64, symsvel]
+    concurrency:
+      group: front-ci-${{ github.head_ref || github.ref_name }}
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -16,6 +22,27 @@ jobs:
           node-version: '24'
           cache: npm
       - run: npm ci
+      - name: Format with repository Prettier
+        run: npm run format
+      - name: Commit formatting on dev
+        if: github.event_name == 'push' && github.ref_name == 'dev'
+        run: |
+          if ! git diff --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add -u
+            git commit -m 'style: apply Prettier formatting [skip ci]'
+            git fetch origin dev
+            if ! git rebase origin/dev; then
+              git rebase --abort
+              echo 'Formatting commit conflicts with newer changes.' >&2
+              exit 1
+            fi
+            git push origin HEAD:dev
+          fi
+      - name: Verify no formatting drift on main or pull requests
+        if: github.ref_name == 'main' || github.event_name == 'pull_request'
+        run: git diff --exit-code
       - run: npx playwright install chromium
       - run: npm run qa
       - name: Verify deployable static build

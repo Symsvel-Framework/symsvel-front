@@ -40,3 +40,23 @@ Les parcours complets de création, Setup Wizard, synchronisation des modules et
 Le workflow `.github/workflows/ci.yml` utilise le runner Docker auto-hébergé de l'organisation (labels `self-hosted`, `linux`, `ARM64`, `symsvel`). Node.js 24 est installé par `actions/setup-node`, puis `npm ci` installe les dépendances et `npx playwright install chromium` fournit le navigateur. Les bibliothèques système Chromium doivent être préinstallées dans l'image du runner : le job ne lance pas `--with-deps`.
 
 La CI conserve `npm run qa` (Svelte/TypeScript, lint, build statique, tests unitaires et Playwright) et vérifie `build/index.html`, `build/.htaccess` et `build/robots.txt`. Le workflow hébergé d'origine est conservé dans `.github/workflows/ci.yml.stub`, inactif. La migration doit être confirmée par une CI GitHub Actions verte.
+
+## Dictionnaires statiques de traductions (17/11/2026)
+
+Tooling peut publier `src/lib/i18n/generated/<lang>.ts` depuis le BO de développement. Le helper `generatedTranslation(language, key)` dans `src/lib/i18n/generated-translations.ts` découvre les fichiers présents à la compilation SvelteKit et résout les clés imbriquées, avec repli français par clé. Le Front de base n'a pas encore de pages métier consommatrices : les modules Front doivent utiliser cette fonction pour leurs textes. Aucune dépendance à Node ou Redis en production et aucun rebuild déclenché depuis le BO ; les sources mises à jour sont construites au prochain déploiement CD.
+
+## Traductions des composants et modules (18/11/2026)
+
+Les textes système sont fournis par le composant sous `src/lib/translations/system/<lang>.ts` ; les textes des modules par Tooling sous `src/lib/translations/<module>/<lang>.ts`. La convention est `<scope>.<module|system>.<key>`. Le helper préfère `src/lib/translations/generated` et conserve une lecture des anciens `src/lib/i18n/generated` durant la migration. Chargement statique au build, fallback français à la clé, aucune requête runtime.
+
+### Dictionnaires et formatage
+
+`src/lib/translations/**` est exclu de Prettier, car ces fichiers sont des exports TypeScript de données JSON strictes analysées par Tooling. Les dictionnaires synchronisés depuis les modules et les fichiers générés par Languages ne doivent pas être réécrits en objets JavaScript à clés non citées. Les autres sources du projet restent formatées normalement.
+
+### Traductions du squelette Front
+
+Le squelette public Front fournit ses deux textes natifs dans `src/lib/translations/system/{fr,en}.ts` sous `front.system.welcome.*`. L'écran reste statiquement prérendu en français et utilise la langue du navigateur après hydratation, sans API de langue, stockage local ni serveur Node. Les pages métier futures pourront remplacer ce simple accueil sans conserver ses clés inutilisées.
+
+### CI des dictionnaires Front (18/11/2026)
+
+La dernière CI Front de `feat/translations-sources`, comprenant le dictionnaire natif `front.system.welcome.*` et le build statique, a terminé avec succès sur les runners locaux. Le déclencheur temporaire de cette branche a été retiré pour conserver la politique habituelle `dev`/`main`. Les CT locaux resteront nécessaires avant merge.

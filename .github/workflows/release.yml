@@ -32,5 +32,5 @@ jobs:
             if (ref.data.ref !== `refs/tags/${tag}`) throw new Error('Tag verification failed.');
             await github.rest.repos.createRelease({
               owner, repo, tag_name: tag, name: tag,
-              body: "Release initiale de validation. Aucun changement fonctionnel. Cette version sert de référence pour tester le processus de mise à jour en environnement APP_ENV=dev."
+              generate_release_notes: true
             });
