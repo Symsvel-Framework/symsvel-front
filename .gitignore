@@ -11,6 +11,9 @@ node_modules
 # OS
 .DS_Store
 Thumbs.db
+.AppleDouble
+.LSOverride
+._*
 
 # Env
 .env
@@ -21,5 +24,24 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
 # Playwright
-test-results
+/test-results/
+/playwright-report/
+/blob-report/
+/coverage/
+
+# IDE
+/.idea/
+/.vscode/*
+!/.vscode/extensions.json
+!/.vscode/settings.json
+
+# Temporary files
+*.log
+*.tmp
+*.swp
+*~
+
+# CI/CD of the framework is not part of the application project
+/.github/workflows/
