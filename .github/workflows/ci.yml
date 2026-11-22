@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   test:
-    runs-on: [self-hosted, linux, ARM64, symsvel]
+    runs-on: ubuntu-24.04
     concurrency:
       group: front-ci-${{ github.head_ref || github.ref_name }}
       cancel-in-progress: false
@@ -43,7 +43,7 @@ jobs:
       - name: Verify no formatting drift on main or pull requests
         if: github.ref_name == 'main' || github.event_name == 'pull_request'
         run: git diff --exit-code
-      - run: npx playwright install chromium
+      - run: npx playwright install --with-deps chromium
       - run: npm run qa
       - name: Verify deployable static build
         run: |
