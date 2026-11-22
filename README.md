@@ -37,10 +37,9 @@ Les parcours complets de création, Setup Wizard, synchronisation des modules et
 
 ## Intégration continue GitHub-hosted (22/11/2026)
 
-La CI de ce dépôt public utilise désormais **Ubuntu 24.04 sur les runners GitHub**, sans dépendance au Docker du mainteneur. Le workflow actif est `.github/workflows/ci.yml` ; il installe Node.js 24, lance `npm ci`, installe Chromium avec `npx playwright install --with-deps chromium` et conserve les contrôles Svelte/TypeScript, lint, build, tests unitaires et Playwright.  L'ancienne version `ci.yml.stub` est inactive.
+La CI de ce dépôt public utilise désormais **Ubuntu 24.04 sur les runners GitHub**, sans dépendance au Docker du mainteneur. Le workflow actif est `.github/workflows/ci.yml` ; il installe Node.js 24, lance `npm ci`, installe Chromium avec `npx playwright install --with-deps chromium` et conserve les contrôles Svelte/TypeScript, lint, build, tests unitaires et Playwright. L'ancienne version `ci.yml.stub` est inactive.
 
 La publication par tag (`.github/workflows/release.yml`) utilise elle aussi GitHub-hosted. Les runners auto-hébergés sont réservés à `symsvel-packages` et `symsvel-recipes`, qui restent privés. Une CI verte ne remplace pas les crash-tests locaux.
-
 
 ## Dictionnaires statiques de traductions (17/11/2026)
 
