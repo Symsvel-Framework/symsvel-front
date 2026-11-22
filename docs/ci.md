@@ -3,7 +3,6 @@
 Depuis le 22 novembre 2026, les workflows CI de ce dépôt public s'exécutent sur **GitHub-hosted Ubuntu 24.04** et non sur les runners Docker du mainteneur. `.github/workflows/ci.yml` conserve les tests et utilise Node.js 24 (SvelteKit, npm, Playwright et build statique). Déclencheurs : `push` sur `dev` et `main`, et pull requests vers `main`. Le fichier `ci.yml.stub` n'est qu'une archive inactive de la configuration historique.
 
 Les runners auto-hébergés sont réservés aux dépôts privés d'infrastructure `symsvel-packages` et `symsvel-recipes`. Une CI verte n'exonère pas des crash-tests locaux exigés par SymSvel.
- 
 
 La branche `dev` est le terrain de développement ; `main` conserve la version stable.
 
@@ -14,7 +13,6 @@ Les jobs utilisent les runners auto-hébergés configurés dans le workflow. Une
 ## Releases sur GitHub-hosted (22/11/2026)
 
 Le workflow `.github/workflows/release.yml` s'exécute désormais sur **GitHub-hosted Ubuntu 24.04** pour les tags `vX.Y.Z`. Il conserve les validations existantes, Node.js 24 et Playwright avec installation des dépendances système, ainsi que la vérification du tag et la GitHub Release via `actions/github-script@v7`. L'autorisation `contents: write` reste requise pour publier. Aucun tag n'a été créé pendant la migration ; une release réelle devra être validée séparément.
-
 
 La release déclenchée par un tag `vX.Y.Z` utilise maintenant `[self-hosted, linux, ARM64, symsvel]`. Le setup Node.js 24, les tests Playwright et la génération SvelteKit demeurent ; `npx playwright install chromium` réutilise le fonctionnement de la CI sans installer de paquets système. La publication GitHub génère des notes de changements réelles et vérifie le tag via `actions/github-script@v7`, sans dépendre du binaire `gh` (non garanti sur le runner). L'autorisation `contents: write` est maintenue, aucun tag n'est créé ici. Validation par release réelle et CT de l'artefact requise.
 
