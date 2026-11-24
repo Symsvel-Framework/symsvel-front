@@ -68,3 +68,7 @@ Ce dépôt est distribué sous [licence MIT](LICENSE). Le code peut être utilis
 **Contribuer :** créer un fork, puis proposer une pull request vers `dev` lorsque cette branche existe, sinon vers la branche par défaut. Expliquer la modification et fournir les tests et la documentation concernés. Les mainteneurs conservent la maîtrise des revues, des validations (CI et crash-tests), de l'intégration et des releases officielles. Une PR ne garantit pas son acceptation.
 
 **Versions officielles :** seules les versions diffusées par l'organisation [Symsvel-Framework](https://github.com/Symsvel-Framework) sont officielles. Les forks sont libres sous MIT, mais ne doivent pas être présentés comme officiellement approuvés par les mainteneurs. Cette distinction n'ajoute aucune restriction aux droits accordés par la licence MIT sur le code.
+
+## Déploiement statique
+
+Adapter le domaine API et le répertoire distant dans `.github/workflows/deploy.yml.exemple`, configurer les secrets GitHub `SSH_HOST`, `SSH_USER`, `SSH_PORT`, `SSH_PRIVATE_KEY`, `SSH_KNOWN_HOSTS`, puis renommer le fichier en `deploy.yml`. Le répertoire distant doit être dédié aux fichiers statiques (rsync supprime les fichiers obsolètes). Le workflow est déclenché par le Setup ou manuellement, jamais automatiquement au push.
