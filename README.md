@@ -67,8 +67,6 @@ Le squelette public Front fournit ses deux textes natifs dans `src/lib/translati
 
 La dernière CI Front de `feat/translations-sources`, comprenant le dictionnaire natif `front.system.welcome.*` et le build statique, a terminé avec succès sur les runners locaux. Le déclencheur temporaire de cette branche a été retiré pour conserver la politique habituelle `dev`/`main`. Les CT locaux resteront nécessaires avant merge.
 
----
-
 ## Licence MIT et contributions
 
 Ce dépôt est distribué sous [licence MIT](LICENSE). Le code peut être utilisé, modifié et redistribué, y compris dans des projets commerciaux ou propriétaires, dans les conditions de cette licence (notamment la conservation de la notice de copyright et de licence).
@@ -76,6 +74,10 @@ Ce dépôt est distribué sous [licence MIT](LICENSE). Le code peut être utilis
 **Contribuer :** créer un fork, puis proposer une pull request vers `dev` lorsque cette branche existe, sinon vers la branche par défaut. Expliquer la modification et fournir les tests et la documentation concernés. Les mainteneurs conservent la maîtrise des revues, des validations (CI et crash-tests), de l'intégration et des releases officielles. Une PR ne garantit pas son acceptation.
 
 **Versions officielles :** seules les versions diffusées par l'organisation [Symsvel-Framework](https://github.com/Symsvel-Framework) sont officielles. Les forks sont libres sous MIT, mais ne doivent pas être présentés comme officiellement approuvés par les mainteneurs. Cette distinction n'ajoute aucune restriction aux droits accordés par la licence MIT sur le code.
+
+## Déploiement statique
+
+Adapter le domaine API et le répertoire distant dans `.github/workflows/deploy.yml.exemple`, configurer les secrets GitHub `SSH_HOST`, `SSH_USER`, `SSH_PORT`, `SSH_PRIVATE_KEY`, `SSH_KNOWN_HOSTS`, puis renommer le fichier en `deploy.yml`. Le répertoire distant doit être dédié aux fichiers statiques (rsync supprime les fichiers obsolètes). Le workflow est déclenché par le Setup ou manuellement, jamais automatiquement au push.
 
 ## Participer et soutenir le projet
 

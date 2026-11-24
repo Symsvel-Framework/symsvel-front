@@ -1,0 +1,64 @@
+name: Deploy SymSvel Front public
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: symsvel-front-deployment
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Verify SvelteKit types
+        run: npm run check
+
+      - name: Build static site
+        run: npm run build
+        env:
+          PUBLIC_API_URL: https://api.example.com
+
+      - name: Require a complete static build
+        run: test -s build/index.html
+
+      - name: Deploy static files over SSH and rsync
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          : "${SSH_HOST:?Missing SSH_HOST}"
+          : "${SSH_USER:?Missing SSH_USER}"
+          : "${SSH_PORT:?Missing SSH_PORT}"
+          : "${SSH_PRIVATE_KEY:?Missing SSH_PRIVATE_KEY}"
+          : "${SSH_KNOWN_HOSTS:?Missing SSH_KNOWN_HOSTS}"
+          [[ "$SSH_PORT" =~ ^[0-9]{1,5}$ ]] || { echo "Invalid SSH_PORT"; exit 1; }
+
+          install -d -m 700 "$RUNNER_TEMP/symsvel-ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$RUNNER_TEMP/symsvel-ssh/id_ed25519"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$RUNNER_TEMP/symsvel-ssh/known_hosts"
+          chmod 600 "$RUNNER_TEMP/symsvel-ssh/id_ed25519" "$RUNNER_TEMP/symsvel-ssh/known_hosts"
+
+          rsync --archive --compress --delete --delay-updates \
+            -e "ssh -i $RUNNER_TEMP/symsvel-ssh/id_ed25519 -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$RUNNER_TEMP/symsvel-ssh/known_hosts -p $SSH_PORT" \
+            build/ "$SSH_USER@$SSH_HOST:/var/www/example/front/"
