@@ -17,8 +17,12 @@ export async function publicProjectName(): Promise<string> {
 	try {
 		const configured = import.meta.env.PUBLIC_API_URL?.trim();
 		const { protocol, hostname, port } = window.location;
-		const backendHostname = hostname.startsWith('front.') ? 'backend.' + hostname.slice(6) : hostname;
-		const base = configured?.replace(/\/$/, '') || protocol + '//' + backendHostname + (port ? ':' + port : '');
+		const backendHostname = hostname.startsWith('front.')
+			? 'backend.' + hostname.slice(6)
+			: hostname;
+		const base =
+			configured?.replace(/\/$/, '') ||
+			protocol + '//' + backendHostname + (port ? ':' + port : '');
 		const response = await fetch(base + '/apiopen/project', {
 			credentials: 'omit',
 			headers: { Accept: 'application/json' }
