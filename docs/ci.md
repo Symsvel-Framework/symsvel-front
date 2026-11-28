@@ -19,3 +19,7 @@ Le libellé historique « Aucun changement fonctionnel » est remplacé par des 
 ## Branding public du projet
 
 Le layout racine fournit un store par instance via `provideProjectBrand()`. Une requête anonyme à `/apiopen/project` après hydratation fournit le nom public pour le titre. Les composants peuvent appeler `getProjectBrand()` pendant leur initialisation et afficher `$brandName`. `SymSvel` est uniquement la valeur de repli. `PUBLIC_API_URL` est exposée via Vite à la compilation ; sans configuration explicite, l'origine est déduite du domaine local. Aucun secret ni jeton n'est envoyé. La CI couvre le nom personnalisé et le repli par Playwright ; le CT vérifie le nom du projet déployé.
+
+## Point de montage confidentialité facultatif (28/11/2026)
+
+Le layout front monte au plus une fois l'entrée native `src/lib/modules/gdpr/Runtime.svelte` lorsqu'elle est synchronisée par Tooling. Le glob Vite exact fonctionne aussi sans GDPR installé ; aucune importation statique obligatoire, aucun SDK, appel de consentement ou logique métier dans le layout. Le scope front est fixé par l'hôte et la langue provient du navigateur, avec fallback FR. Le layout reste propriété de l'hôte : le module ne l'écrase pas. La CI hôte vérifie le build autonome ; la CI GDPR doit vérifier le build assemblé et le point de montage réel avant intégration. BO inchangé.
