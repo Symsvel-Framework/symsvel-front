@@ -21,5 +21,8 @@
 {@render children()}
 
 {#if PrivacyRuntime}
-	<PrivacyRuntime scope="front" language={(typeof navigator === 'undefined' ? 'fr' : navigator.language)} />
+	<PrivacyRuntime
+		scope="front"
+		language={typeof navigator === 'undefined' ? 'fr' : navigator.language}
+	/>
 {/if}
